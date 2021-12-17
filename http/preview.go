@@ -82,6 +82,10 @@ func handleVideoPreview(
 	previewSize PreviewSize,
 	enableThumbnails, resizePreview bool,
 ) (int, error) {
+	if (previewSize == PreviewSizeBig && !resizePreview) ||
+		(previewSize == PreviewSizeThumb && !enableThumbnails) {
+		return rawFileHandler(w, r, file)
+	}
 	path := afero.FullBaseFsPath(file.Fs.(*afero.BasePathFs), file.Path)
 
 	cacheKey := previewCacheKey(file.Path, file.ModTime.Unix(), previewSize)
