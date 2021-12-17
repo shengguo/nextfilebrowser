@@ -91,7 +91,6 @@ func handleVideoPreview(
 		return errToStatus(err), err
 	}
 	if !ok {
-		//cmd := exec.Command("ffmpeg", "-y", "-i", path, "-vf", "thumbnail,crop=w='min(iw\\,ih)':h='min(iw\\,ih)',scale=128:128", "-qscale:v", "25", "-frames:v", "1", tmp.Name())
 		stdout, err := exec.Command("ffmpeg", "-y", "-i", path, "-vf", "thumbnail,crop=w='min(iw\\,ih)':h='min(iw\\,ih)',scale=128:128", "-quality", "40", "-frames:v", "1", "-c:v", "webp", "-f", "image2pipe", "-").Output()
 
 		if err != nil {
@@ -110,7 +109,6 @@ func handleVideoPreview(
 	}
 
 	w.Header().Set("Cache-Control", "private")
-	//w.Header().Set("Content-Type", "image/jpeg")
 	w.Header().Set("Content-Type", "image/webp")
 	http.ServeContent(w, r, "", file.ModTime, bytes.NewReader(resizedImage))
 	return 0, nil
