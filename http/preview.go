@@ -67,7 +67,7 @@ func previewHandler(imgSvc ImgService, fileCache FileCache, enableThumbnails, re
 		case "image":
 			return handleImagePreview(w, r, imgSvc, fileCache, file, previewSize, enableThumbnails, resizePreview)
 		case "video":
-			return handleVideoPreview(w, r, imgSvc, fileCache, file, previewSize, enableThumbnails, resizePreview)
+			return handleVideoPreview(w, r, fileCache, file, previewSize, enableThumbnails, resizePreview)
 		default:
 			return http.StatusNotImplemented, fmt.Errorf("can't create preview for %s type", file.Type)
 		}
@@ -77,7 +77,6 @@ func previewHandler(imgSvc ImgService, fileCache FileCache, enableThumbnails, re
 func handleVideoPreview(
 	w http.ResponseWriter,
 	r *http.Request,
-	imgSvc ImgService,
 	fileCache FileCache,
 	file *files.FileInfo,
 	previewSize PreviewSize,
@@ -105,7 +104,6 @@ func handleVideoPreview(
 				fmt.Printf("failed to cache resized image: %v", err)
 			}
 		}()
-
 	}
 
 	w.Header().Set("Cache-Control", "private")
