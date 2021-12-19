@@ -94,13 +94,15 @@ func handleVideoPreview(
 		return errToStatus(err), err
 	}
 	if !ok {
-		stdout, err := exec.Command("ffmpeg", "-y", "-i", path, "-vf", "thumbnail,crop=w='min(iw\\,ih)':h='min(iw\\,ih)',scale=128:128", "-quality", "40", "-frames:v", "1", "-c:v", "webp", "-f", "image2pipe", "-").Output()
-
+		cmdArguments := []string{"-y", "-i", path, "-vf", "thumbnail,crop=w='min(iw\\,ih)':h='min(iw\\,ih)',scale=128:128", "-quality", "40", "-frames:v", "1", "-c:v", "webp", "-f", "image2pipe", "-"}
+		cmd := exec.Command("ffmpeg", cmdArguments...)
+		var out bytes.Buffer
+		cmd.Stdout = &out
+		err := cmd.Run()
 		if err != nil {
 			return errToStatus(err), err
 		}
-
-		resizedImage = stdout
+		resizedImage = out.Bytes()
 
 		go func() {
 			cacheKey := previewCacheKey(file.Path, file.ModTime.Unix(), previewSize)
