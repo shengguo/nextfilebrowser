@@ -1,4 +1,4 @@
-SHELL := /bin/bash
+﻿SHELL := /bin/bash
 BASE_PATH := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 VERSION ?= $(shell git describe --tags --always --match=v* 2> /dev/null || \
            			cat $(CURDIR)/.version 2> /dev/null || echo v0)
@@ -77,16 +77,6 @@ lint-frontend: | ; $(info $(M) running frontend linters…)
 .PHONY: lint-backend
 lint-backend: | $(GOLANGCI_LINT) ; $(info $(M) running backend linters…)
 	$Q $(GOLANGCI_LINT) run
-
-## lint-commits: Lint commits
-.PHONY: lint-commits
-lint-commits: | ; $(info $(M) running commitlint…)
-	$Q ./scripts/commitlint.sh
-
-## bump-version: Bump app version
-.PHONY: bump-version
-bump-version: | ; $(info $(M) creating a new release…)
-	$Q ./scripts/bump_version.sh
 
 ## help: Show this help
 .PHONY: help
