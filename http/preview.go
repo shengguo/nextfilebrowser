@@ -94,7 +94,8 @@ func handleVideoPreview(
 		return errToStatus(err), err
 	}
 	if !ok {
-		cmdArguments := []string{"-y", "-i", path, "-vf", "thumbnail,crop=w='min(iw\\,ih)':h='min(iw\\,ih)',scale=128:128", "-quality", "40", "-frames:v", "1", "-c:v", "webp", "-f", "image2pipe", "-"}
+		cmdArguments := []string{"-y", "-i", path, "-vf", "thumbnail,crop=w='min(iw\\,ih)':h='min(iw\\,ih)',scale=128:128",
+			"-quality", "40", "-frames:v", "1", "-c:v", "webp", "-f", "image2pipe", "-"}
 		cmd := exec.Command("ffmpeg", cmdArguments...)
 		var out bytes.Buffer
 		cmd.Stdout = &out
