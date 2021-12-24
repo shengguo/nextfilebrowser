@@ -191,7 +191,7 @@ export default {
       // reload the image when the file is replaced
       const key = Date.parse(this.req.modified);
 
-      if ((this.req.type === "image" || this.req.type === "video" ) && !this.fullSize) {
+      if (this.req.type === "image" && !this.fullSize) {
         return `${baseURL}/api/preview/big${url.encodePath(
           this.req.path
         )}?k=${key}`;
